@@ -1,0 +1,486 @@
+% ============================================================
+%  TEMPLATE – Relatório de Projeto | Métodos Numéricos
+%  Engenharia de Computação – IFPB Campus Campina Grande
+% ============================================================
+
+\documentclass[12pt, a4paper]{article}
+
+% ── Codificação e língua ────────────────────────────────────
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+
+% ── Tipografia ──────────────────────────────────────────────
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% ── Margens (ABNT-ish) ──────────────────────────────────────
+\usepackage[
+  top=3cm, bottom=2cm,
+  left=3cm, right=2cm,
+  headheight=26pt
+]{geometry}
+
+% ── Cores ───────────────────────────────────────────────────
+\usepackage[dvipsnames]{xcolor}
+\definecolor{ifpbgreen}{RGB}{31, 107, 54}   % verde derivado da logo do IFPB
+\definecolor{ifpbred}{HTML}{CF3034}
+\definecolor{codebg}{RGB}{245, 245, 245}
+
+% ── Links e metadados PDF ───────────────────────────────────
+\usepackage[
+  colorlinks=true,
+  linkcolor=ifpbgreen,
+  citecolor=ifpbgreen,
+  urlcolor=ifpbgreen,
+  pdftitle={Relatório de Projeto – Métodos Numéricos},
+  pdfauthor={Guilherme José Mendes Jerônimo e William de Sousa Costa},
+]{hyperref}
+
+% ── Matemática ──────────────────────────────────────────────
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{mathtools}
+
+% ── Algoritmos e código ─────────────────────────────────────
+\usepackage{listings}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\lstset{
+  language=Python,
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  frame=single,
+  rulecolor=\color{gray!40},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  numbersep=8pt,
+  keywordstyle=\bfseries\color{ifpbgreen},
+  commentstyle=\itshape\color{gray},
+  stringstyle=\color{Maroon},
+  showstringspaces=false,
+  breaklines=true,
+  breakatwhitespace=true,
+  captionpos=b,
+  aboveskip=10pt,
+  belowskip=4pt,
+  literate=
+    {á}{{\'a}}1 {ã}{{\~a}}1 {â}{{\^a}}1 {à}{{\`a}}1
+    {é}{{\'e}}1 {ê}{{\^e}}1
+    {í}{{\'i}}1
+    {ó}{{\'o}}1 {õ}{{\~o}}1 {ô}{{\^o}}1
+    {ú}{{\'u}}1 {ü}{{\"u}}1
+    {ç}{{\c c}}1
+    {Á}{{\'A}}1 {Ã}{{\~A}}1 {Â}{{\^A}}1
+    {É}{{\'E}}1 {Ê}{{\^E}}1
+    {Í}{{\'I}}1
+    {Ó}{{\'O}}1 {Õ}{{\~O}}1 {Ô}{{\^O}}1
+    {Ú}{{\'U}}1
+    {Ç}{{\c C}}1,
+}
+
+\renewcommand{\lstlistingname}{Código}
+
+% ── Figuras e tabelas ───────────────────────────────────────
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{tabularx}
+
+\captionsetup{
+  font=small,
+  labelfont={bf, color=ifpbgreen},
+  justification=centering,
+}
+
+% ── Cabeçalho e rodapé ──────────────────────────────────────
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\raisebox{-0.1cm}{\includegraphics[height=0.5cm]{rsc/logo-menor.png}}\small\textcolor{ifpbgreen}{Métodos Numéricos}}
+\fancyhead[C]{}
+\fancyhead[R]{\small\textcolor{gray}{Projeto \ProjetoNumero{} – \TituloCurto{}}}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{%
+  \hbox to\headwidth{\color{ifpbgreen}\leaders\hrule height \headrulewidth\hfill}%
+}
+
+% ── Sumário colorido (mesmo padrão dos títulos) ──────────────
+\usepackage{tocloft}
+
+\renewcommand{\cftsecfont}{\bfseries\color{ifpbgreen}}
+\renewcommand{\cftsecpagefont}{\color{ifpbgreen}}
+\renewcommand{\cftsubsecfont}{\color{ifpbgreen!80}}
+\renewcommand{\cftsubsecpagefont}{\color{ifpbgreen!80}}
+
+\renewcommand{\cftsecpresnum}{\color{ifpbred}}
+\renewcommand{\cftsecaftersnum}{\color{ifpbgreen}}
+\renewcommand{\cftsubsecpresnum}{\color{ifpbred}}
+\renewcommand{\cftsubsecaftersnum}{\color{ifpbgreen!80}}
+
+\setlength{\cftsecnumwidth}{2.5em}
+\setlength{\cftsubsecnumwidth}{3em}
+
+% ── Seções coloridas ────────────────────────────────────────
+\usepackage{titlesec}
+\titleformat{\section}
+  {\large\bfseries\color{ifpbgreen}}
+  {\textcolor{ifpbred}{\thesection.}}{0.6em}{}
+  [\vspace{-4pt}\textcolor{ifpbgreen!40}{\hrule height 0.6pt}\vspace{4pt}]
+
+\titleformat{\subsection}
+  {\normalsize\bfseries\color{ifpbgreen!80}}
+  {\textcolor{ifpbred}{\thesubsection.}}{0.5em}{}
+
+\titleformat{\subsubsection}
+  {\normalsize\itshape\color{ifpbgreen!60}}
+  {\textcolor{ifpbred}{\thesubsubsection.}}{0.4em}{}
+
+% ── Caixas de destaque ──────────────────────────────────────
+\usepackage[most]{tcolorbox}
+
+\tcbset{
+  baseStyle/.style={
+    colback=ifpbgreen!5,
+    colframe=ifpbgreen!60,
+    fonttitle=\bfseries\small,
+    boxrule=0.6pt,
+    arc=3pt,
+    left=6pt, right=6pt,
+    top=4pt, bottom=4pt,
+  }
+}
+
+\newtcolorbox{destaque}[1][Observação]{
+  baseStyle,
+  title={#1},
+}
+
+\newtcolorbox{resultado}[1][Resultado]{
+  colback=ifpbgreen!8,
+  colframe=ifpbgreen!70!black,
+  fonttitle=\bfseries\small,
+  boxrule=0.6pt,
+  arc=3pt,
+  left=6pt, right=6pt,
+  top=4pt, bottom=4pt,
+  title={#1},
+}
+
+% ── Espaçamento de parágrafos ───────────────────────────────
+\usepackage{parskip}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+
+% ── Referências ─────────────────────────────────────────────
+\usepackage{csquotes}
+\usepackage[
+  backend=biber,
+  style=abnt,
+  ittitles,
+]{biblatex}
+\addbibresource{bib/referencias.bib}
+
+% ============================================================
+%  MACROS DE METADADOS
+% ============================================================
+\newcommand{\Titulo}{Título do Projeto}
+\newcommand{\TituloCurto}{Título Curto} % usado no cabeçalho
+\newcommand{\ProjetoNumero}{1} % 1, 2 ou 3
+\newcommand{\Professor}{Paulo Ribeiro}
+\newcommand{\Disciplina}{Métodos Numéricos}
+\newcommand{\Curso}{Engenharia de Computação}
+\newcommand{\Campus}{Campus Campina Grande}
+\newcommand{\Semestre}{2025.1}
+\newcommand{\DataEntrega}{22 de junho de 2026}
+
+% ============================================================
+\begin{document}
+
+% ── Capa ────────────────────────────────────────────────────
+\begin{titlepage}
+  \centering
+
+  \textcolor{ifpbgreen}{\rule{\linewidth}{2pt}}\\[0.5cm]
+
+  \noindent
+  \begin{minipage}[c]{0.2\linewidth}
+  \includegraphics[height=1.8cm]{rsc/logo-if.png}
+  \end{minipage}%
+  \begin{minipage}[c]{0.78\linewidth}
+  {\Large\bfseries\color{ifpbgreen} Instituto Federal da Paraíba}\\
+  {\normalsize\color{gray} \Campus{} \textperiodcentered{} \Curso}
+  \end{minipage}\\[0.5cm]
+
+  \textcolor{ifpbgreen}{\rule{\linewidth}{0.8pt}}
+
+  \vspace{2cm}
+
+  {\large\color{gray} Projeto \ProjetoNumero{} – \Disciplina}\\[0.4cm]
+  {\LARGE\bfseries\color{ifpbgreen} \Titulo}
+
+  \vspace{2.5cm}
+
+  \begin{tabular}{rll}
+    \textbf{Alunos:}    & Guilherme José Mendes Jerônimo & (202321250017) \\
+                         & William de Sousa Costa          & (202321250008) \\[6px]
+    \textbf{Professor:} & \Professor                      & \\
+    \textbf{Semestre:}  & \Semestre                       & \\
+    \textbf{Entrega:}   & \DataEntrega                    & \\
+  \end{tabular}
+
+  \vfill
+
+  \textcolor{ifpbgreen}{\rule{\linewidth}{0.8pt}}\\[0.2cm]
+  {\small\color{gray} Campina Grande – PB · \the\year}
+\end{titlepage}
+
+% ── Sumário ─────────────────────────────────────────────────
+\tableofcontents
+\newpage
+
+% ============================================================
+\section{Descrição do Problema}
+\label{sec:problema}
+% ============================================================
+
+%% Objetivo desta seção:
+%%   – Apresentar o problema com precisão.
+%%   – Descrever suas características (entrada, saída, restrições).
+%%   – Relacionar aplicações reais onde o problema ocorre.
+
+\subsection{Contexto e Motivação}
+
+Lorem ipsum – descreva brevemente o domínio do problema
+(recomendação, modelagem de texto, visão computacional, etc.).
+
+\subsection{Formulação Matemática}
+
+Apresente a formulação formal. Exemplo para SVD:
+
+\begin{equation}
+  \mathbf{A} = \mathbf{U}\,\boldsymbol{\Sigma}\,\mathbf{V}^\top,
+  \quad \mathbf{A} \in \mathbb{R}^{m \times n}
+  \label{eq:svd}
+\end{equation}
+
+onde $\mathbf{U} \in \mathbb{R}^{m \times m}$ e $\mathbf{V} \in \mathbb{R}^{n \times n}$
+são matrizes ortogonais, e $\boldsymbol{\Sigma} \in \mathbb{R}^{m \times n}$
+é diagonal com os valores singulares $\sigma_1 \geq \sigma_2 \geq \cdots \geq 0$.
+
+\subsection{Aplicações Associadas}
+
+\begin{itemize}
+  \item Aplicação 1 – breve descrição.
+  \item Aplicação 2 – breve descrição.
+  \item Aplicação 3 – breve descrição.
+\end{itemize}
+
+\begin{destaque}[Nota sobre os dados]
+  Descreva aqui características relevantes do conjunto de dados usado
+  (dimensões, esparsidade, origem, etc.).
+\end{destaque}
+
+% Exemplo de citação: troque pela referência real do seu projeto.
+% \cite{chave} insere "(Autor, Ano)"; \textcite{chave} insere "Autor (Ano)".
+Sistemas de recomendação baseados em fatoração de matrizes são amplamente
+discutidos na literatura, com aplicações que vão de plataformas de streaming
+a e-commerce \cite{koren2009matrix}.
+
+\newpage
+
+% ============================================================
+\section{Métodos Aplicados à Solução}
+\label{sec:metodos}
+% ============================================================
+
+%% Objetivo desta seção:
+%%   – Descrever cada método numérico utilizado.
+%%   – Explicar seu funcionamento e complexidade.
+%%   – Justificar a escolha para o problema em questão.
+
+\subsection{Método 1: <Nome do Método>}
+
+\subsubsection{Descrição Geral}
+
+Explique o método. Para que tipo de problemas ele é adequado?
+
+% Exemplo: cite a referência teórica fundamental do método escolhido.
+A Decomposição em Valores Singulares (SVD) é uma das ferramentas mais
+estabelecidas da álgebra linear numérica, com tratamento detalhado em
+\textcite{golub2013matrix} e em \textcite{trefethen1997numerical}.
+
+\subsubsection{Algoritmo}
+
+\begin{algorithm}[H]
+\caption{Nome do Algoritmo}
+\label{alg:metodo1}
+\begin{algorithmic}[1]
+  \Require Entrada 1, Entrada 2
+  \Ensure Saída esperada
+  \State Inicializar variáveis
+  \For{$k = 1$ \textbf{até} $K_{\max}$}
+    \State Passo iterativo
+    \If{critério de parada}
+      \State \textbf{break}
+    \EndIf
+  \EndFor
+  \Return resultado
+\end{algorithmic}
+\end{algorithm}
+
+\subsubsection{Propriedades e Complexidade}
+
+\begin{tabular}{ll}
+  \toprule
+  Propriedade        & Valor \\
+  \midrule
+  Complexidade temporal & $\mathcal{O}(\ldots)$ \\
+  Complexidade espacial & $\mathcal{O}(\ldots)$ \\
+  Convergência          & --- \\
+  \bottomrule
+\end{tabular}
+
+\subsubsection{Justificativa para o Problema}
+
+Explique \emph{por que} este método é adequado para o problema descrito
+na Seção~\ref{sec:problema}. Por exemplo, no caso de remoção de plano de
+fundo via decomposição de baixo posto, o trabalho de
+\textcite{candes2011robust} mostra como separar componentes esparsos e
+de baixo posto de forma robusta a ruído.
+
+% ── Repita o bloco acima para cada método adicional ──────────
+
+\subsection{Método 2: <Nome do Método>} % remova se não houver
+
+% ...
+
+\newpage
+
+% ============================================================
+\section{Implementação}
+\label{sec:implementacao}
+% ============================================================
+
+%% Objetivo desta seção:
+%%   – Mostrar o código com explicações passo a passo.
+%%   – Relacionar cada trecho ao método descrito na Seção 2.
+%%   – Apresentar e comentar cada saída relevante.
+
+\subsection{Ambiente e Dependências}
+
+A implementação foi realizada em Python~3.x com as bibliotecas:
+
+\begin{itemize}
+  \item \texttt{numpy} – operações matriciais
+  \item \texttt{scipy} – decomposições e utilitários
+  \item \texttt{matplotlib} – visualizações
+  % adicione outras conforme necessário
+\end{itemize}
+
+% ── Subseção para cada etapa principal da implementação ──────
+
+\subsection{Etapa 1: Carregamento e Pré-processamento dos Dados}
+
+Descreva o que é feito nesta etapa e por quê.
+
+\begin{lstlisting}[caption={Carregamento dos dados}, label={lst:load}]
+import numpy as np
+
+# Carrega a matriz de dados (m x n)
+A = np.load("dados.npy")
+
+# Normalização (zero-mean por coluna)
+A_norm = A - A.mean(axis=0)
+
+print(f"Shape: {A_norm.shape}")   # Saida: Shape: (m, n)
+print(f"NaNs: {np.isnan(A_norm).sum()}")
+\end{lstlisting}
+
+\textbf{Saída esperada:}
+\begin{verbatim}
+Shape: (XXX, YYY)
+NaNs: 0
+\end{verbatim}
+
+Explique o que a saída indica e como ela se relaciona com o método.
+
+% ────────────────────────────────────────────────────────────
+
+\subsection{Etapa 2: Aplicação do Método}
+
+\begin{lstlisting}[caption={Decomposição / aplicação do método}, label={lst:method}]
+from scipy.linalg import svd
+
+# Decomposicao SVD truncada em k componentes
+k = 50
+U, s, Vt = svd(A_norm, full_matrices=False)
+
+U_k  = U[:, :k]
+S_k  = np.diag(s[:k])
+Vt_k = Vt[:k, :]
+
+A_approx = U_k @ S_k @ Vt_k
+print(f"Erro de reconstrucao (Frobenius): {np.linalg.norm(A - A_approx):.4f}")
+\end{lstlisting}
+
+Explique cada variável e como o trecho implementa o que foi descrito
+nas equações da Seção~\ref{sec:metodos} (e.g., Eq.~\ref{eq:svd}).
+
+\begin{resultado}
+  Apresente o resultado numérico obtido (erro, acurácia, RMSE, etc.)
+  e interprete seu significado.
+\end{resultado}
+
+% ────────────────────────────────────────────────────────────
+
+\subsection{Etapa 3: Visualização / Avaliação dos Resultados}
+
+\begin{lstlisting}[caption={Visualização dos resultados}, label={lst:viz}]
+import matplotlib.pyplot as plt
+
+# Exemplo: variancia explicada pelos valores singulares
+var_explicada = (s**2) / (s**2).sum()
+var_acumulada = np.cumsum(var_explicada)
+
+plt.figure(figsize=(7, 4))
+plt.plot(var_acumulada * 100, color="#0B4B3F")
+plt.axvline(k, color="#B23A2E", linestyle="--", label=f"k = {k}")
+plt.xlabel("Número de componentes")
+plt.ylabel("Variância explicada acumulada (%)")
+plt.title("Energia capturada pela SVD truncada")
+plt.legend()
+plt.tight_layout()
+plt.savefig("variancia_svd.pdf", dpi=150)
+plt.show()
+\end{lstlisting}
+
+\begin{figure}[H]
+  \centering
+  % \includegraphics[width=0.75\linewidth]{variancia_svd.pdf}
+  \fbox{\textit{[inserir figura gerada pelo código acima]}}
+  \caption{Variância explicada acumulada em função do número de componentes.}
+  \label{fig:variancia}
+\end{figure}
+
+Descreva o que a figura revela sobre o comportamento do método.
+
+\newpage
+
+% ============================================================
+\section{Conclusão}
+\label{sec:conclusao}
+% ============================================================
+
+Sintetize os resultados obtidos, limitações encontradas e possíveis
+extensões do trabalho.
+
+\newpage
+
+% ── Referências ─────────────────────────────────────────────
+\printbibliography[heading=bibintoc, title={Referências}]
+
+\end{document}
