@@ -1,0 +1,4 @@
+{
+    "latex-workshop.latex.auxDir": "%OUTDIR%/aux",
+    "latex-workshop.synctex.afterBuild.enabled": false
+}
